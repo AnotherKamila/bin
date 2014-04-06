@@ -1,0 +1,8 @@
+snapshot / and /var : sudo ~/bin/sys/with_btrfs.sh ~/bin/sys/btrfs_snapshot.sh root var
+snapshot /home      : sudo ~/bin/sys/with_btrfs.sh ~/bin/sys/btrfs_snapshot.sh home
+update system       : sudo ~/bin/sys/with_btrfs.sh ~/bin/sys/btrfs_snapshot.sh root var; sudo aura -Syu; sudo aura -Au
+backup all          : sudo ~/bin/sys/with_btrfs.sh ~/bin/sys/backup_to_hdd.sh root var home
+backup system       : sudo ~/bin/sys/with_btrfs.sh ~/bin/sys/backup_to_hdd.sh root var
+backup home         : sudo ~/bin/sys/with_btrfs.sh ~/bin/sys/backup_to_hdd.sh home
+toggle fsck on boot : sudo ~/bin/sys/toggle_btrfsck_on_boot.sh
+sync time with ntp  : sudo ntpd -qg && sudo hwclock -w

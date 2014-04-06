@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# svg2pdf: uses inkscape to convert a svg file to pdf
+
+for f in $@ ; do
+	if [[ `file --brief --mime-type "$f"` == 'image/svg+xml' ]]; then
+		INFILE="$f"
+		OUTFILE="${INFILE%.svg}.pdf"
+		inkscape -z --export-pdf="$OUTFILE" --export-area-drawing -f "$INFILE"
+	else
+		echo "File \`$f' does not look like a SVG file!"
+	fi
+done
