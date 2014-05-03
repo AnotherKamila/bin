@@ -24,6 +24,8 @@ backup_subvol() {
 
 	btrfs subvolume snapshot "$SUBVOL" "$SNAPSHOT"
 
+	rm -f "$DEST/$SUBVOL-current"
+
 	NEWEST="`ls -d -1 $DEST/$SUBVOL-* 2>/dev/null | sort -n | tail -n1`"
 	if [[ -n "$NEWEST" ]]; then
 		# remove oldest backup if necessary
@@ -38,9 +40,8 @@ backup_subvol() {
 		RSYNC_OPTS="$RSYNC_OPTS -H --link-dest=$NEWEST"
 	fi
 
-	rm -f "$DEST/$SUBVOL-current"
 	CURRENT="$DEST/$SUBVOL-$NOW"
-	nice -n $NICENESS rsync $RSYNC_OPTS --delete --numeric-ids "$SNAPSHOT" "$CURRENT" 2> "$LOGFILE"
+	nice -n $NICENESS rsync $RSYNC_OPTS --delete --numeric-ids "$SNAPSHOT/" "$CURRENT" 2> "$LOGFILE"
 
 	if [ -s $LOGFILE ]; then
 		echo "Backup of $SOURCE did not finish successfully. Review the log file (${LOGFILE}) to see what went wrong." >&2
